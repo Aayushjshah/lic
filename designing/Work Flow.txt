@@ -1,0 +1,6 @@
+?Work Flow
+?Setup on git
+?Make a report about all the main pages etc
+?Design each page in detail
+?Setup order in which pages must be created 
+?

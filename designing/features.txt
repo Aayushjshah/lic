@@ -1,0 +1,23 @@
+click on a year => see which policies are maturing and what total combined premium
+messaging =>
+message b4 1 month of any premium payement due . 
+message every new year total payment and maturing policies with due etc a summary type.
+
+    If replied PAID then stop messaging abt that particular premium .Else b4 15 days, 10 days 5 dyas 3 days 2,1 days..
+
+
+Store e- copies i.e. pdfs of all lic policies .
+we can generate e receipts maintain a full record give a reminder if premeium paid bt soft copy nt uploaded
+
+have a premium calculator
+
+
+
+Pages
+
+poilcyCopy (policy schedule)
+premiumCalendar (list all preimum abt all 4 of us in this tab )
+    it will be month wise each will have cards
+
+
+
