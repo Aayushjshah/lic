@@ -140,13 +140,14 @@ public class App extends JFrame implements ActionListener{
             Conn c = new Conn();
             Hash h = new Hash();
             String hashedPassword = h.doHashing(tPassword);
-            System.out.println(hashedPassword);
+            // System.out.println(hashedPassword);
             // String query = "insert into login values('"+ tId+"' , '"+hashedPassword+"')";
             String query = "select * from login where id='"+tId+"' and password='"+hashedPassword+"'";
             try{
                 
                 
                 ResultSet rs = c.s.executeQuery(query);
+                
                 while(rs.next()){
                     System.out.println(rs.getString(1));
                 }
