@@ -4,7 +4,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.*;
 import java.sql.ResultSet;
-import java.sql.*;
+// import java.sql.*;
 
 public class Register extends JFrame implements ActionListener,FocusListener,KeyListener{
     
@@ -232,17 +232,17 @@ public class Register extends JFrame implements ActionListener,FocusListener,Key
         //members
             // String query3 = "insert into members values(1,'"+tarr[4].getText()+"','"+tempStorage[0][1]+"','"+tempStorage[0][2]+"','"+tempStorage[0][0]+"'";
             System.out.println(tempStorage.length);
-            for(int i=0 ; i<tempStorage.length;i++){
-                for(int j=0;j<3;j++){
-                    System.out.println(tempStorage[i][j]);
-//Start here                    
-                }
-            }    
             
-            // System.out.println(query3);    
+            String query3 = "insert into members values(1,'"+tarr[4].getText()+"','HEAD','"+tarr[2].getText()+"','"+tarr[0].getText()+"')";
+            System.out.println(query3);
             try{
-                // c.s.executeUpdate(query1);
-                // c.s.executeUpdate(query2);
+                c.s.executeUpdate(query1);//headUsers
+                c.s.executeUpdate(query2);//login
+                c.s.executeUpdate(query3);//members
+                for(int i=0 ; i<tempStorage.length;i++){
+                    String query4 = "insert into members values("+(i+2)+",'"+tarr[4].getText()+"','"+tempStorage[i][1]+"','"+tempStorage[i][2]+"','"+tempStorage[i][0]+"')";
+                    c.s.executeUpdate(query4);//members
+                }    
                 JOptionPane.showMessageDialog(null , "Head added sucessfully");
             }catch(Exception e){
                 // System.out.println(query2);    
@@ -261,12 +261,14 @@ public class Register extends JFrame implements ActionListener,FocusListener,Key
             new App().setVisible(true);
         }else if(ae.getSource()== addMember ){
             //take info and store it
-                for(int i=0 ; i<tempStorage.length;i++){
+                for(int i=0 ; i<3;i++){
                     tempStorage[t][i]= tarrMem[i].getText();   
                     tarrMem[i].setText("");
                 }
                 t++;
+                System.out.println(tempStorage[t-1][0]);
                 System.out.println(tempStorage[t-1][1]);
+                System.out.println(tempStorage[t-1][2]);
             if(memCounter != numMem+1){
                 addMemberFunction();
             }else{

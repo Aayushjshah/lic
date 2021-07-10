@@ -147,10 +147,12 @@ public class App extends JFrame implements ActionListener{
                 
                 
                 ResultSet rs = c.s.executeQuery(query);
-                
+                String bu ="Welcome ";
                 while(rs.next()){
-                    System.out.println(rs.getString(1));
+                    bu+=rs.getString(1);
+                    JOptionPane.showMessageDialog(null , bu);
                 }
+                
             }catch(Exception e){
                 e.printStackTrace();
             }
