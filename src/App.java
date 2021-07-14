@@ -13,7 +13,6 @@ public class App extends JFrame implements ActionListener{
     JPasswordField t2;
     App(){
 
-
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/ocean.jpg"));
         Image i2 = i1.getImage().getScaledInstance(380,440,Image.SCALE_DEFAULT);
         ImageIcon i3 = new ImageIcon(i2);
