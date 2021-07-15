@@ -82,8 +82,12 @@ public class FileChooserTest extends JFrame {
       // System.out.println("in addFile");
       System.out.println(initFileName);
       File initFile = new File(initFileName);
-      File newFile  = new File("designing/");
-
+      File newFile  = new File("designing/A/new1.pdf");
+      try{
+        Files.copy(initFile.toPath(),newFile.toPath());
+      }catch(Exception e){
+        e.printStackTrace();
+      }
   }
   public static void main(String[] args) {
     run(new FileChooserTest(), 250, 110);
