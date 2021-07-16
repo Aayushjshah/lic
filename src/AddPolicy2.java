@@ -1,82 +1,59 @@
 import javax.swing.*;
-import javax.swing.event.MouseInputListener;
-
-import org.w3c.dom.events.MouseEvent;
-
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.*;
+import java.io.File;
 import java.sql.ResultSet;
 
-public class AddPolicy2 extends JFrame implements ActionListener,MouseInputListener{
-    JLabel[] arr = new JLabel[7];
-    String[] labels = {"First premium","Premium Cycle", "Installment Premium" ,"Premium Month" , "Last Premium Date",
-                        "No. of yrs premium to be Paid","From Bank A/C"};
-    JTextField[] tarr = new JTextField[4];
-    JComboBox[] carr = new JComboBox[4];//last for nominee
-    String[] c0,c1,c2,c3;
+public class AddPolicy2 extends JFrame implements ActionListener{
+    JLabel[] arr = new JLabel[8];
+    String[] labels = {"First premium","Premium Cycle", "Installment Premium"  , "Last Premium Date",
+                        "No.of yrs prm to be Paid","From Bank A/C","Maturity Amount" , "Date of Maturity"};
+    JTextField[] tarr = new JTextField[8];
+    JComboBox<String>carr,nCarr;//last for nominee
+    // String[] c0,c1,c2,c3;
     int j;
 
     JLabel[] nArr = new JLabel[3];  //nominee relation
-    String[] nLabel = {"Nominee", "Relation" , "Contact NO." };
+    String[] nLabel = {"Name", "Contact NO." };
     JTextField[] nTarr = new JTextField[3];
 
-//new insurancetypr
-    JTextField nInsuranceType,nCompanyTf;
-    JLabel subHead,subHead2;
 
-    JButton back,next,subnInsuranceType,nCompanyBut;
+    String[] agentName;
+    JButton back,next,Cancel,Submit;
     JLabel image;
     FontPicker fp = new FontPicker();
     int i;
+    public String eCopyFlag="n";
     String userName;
 
 //tempSaveVariables
-String[] policyPg1 = new String[7];
-String[] nomineeMemory = new String[3];
 
-    public AddPolicy2(String username){
+AddPolicy ap;
+String[] policyDetails,nomineeDetails;
+    public AddPolicy2(String username,String[] policyDet , String[] nomineeDet,AddPolicy app){
+        policyDetails=policyDet;
+        nomineeDetails=nomineeDet;
+        ap=app;
         //inital db connect to fill up dropdowns
         userName=username;
-        Conn c = new Conn();
+            Conn c = new Conn();
+            String getAgentNames = "select name from agent";
+            
         try{
-            //company c2
-            String query = "select count(*) from company";
-            ResultSet rs = c.s.executeQuery(query);
+            ResultSet rs = c.s.executeQuery("select count(*) from agent");
             rs.next();
-            c2=new String[rs.getInt(1)+1];
-
-            String query1 = "select * from company";
-            rs=c.s.executeQuery(query1);
+            agentName = new String[rs.getInt(1)+2];
+            rs= c.s.executeQuery(getAgentNames);
             i=0;
             while(rs.next()){
-                c2[i++]=rs.getString(1);
+                agentName[i]=rs.getString(1);
+                i++;
             }
-            c2[c2.length-1]="add new Entry";
-        //Members c0 and c3
-            String query3 = "select NOofMembers from headUsers where username='"+ username+"'";
-            rs=c.s.executeQuery(query3);
-            rs.next();
-            c0=new String[rs.getInt(1)];
-            c3=new String[rs.getInt(1)+2];
-            String memberQuery = "select name from members where username='"+username+"'";
-            rs= c.s.executeQuery(memberQuery);
-            i=0;
-            while(rs.next()){
-                c3[i]=rs.getString(1);
-                c0[i++]=rs.getString(1);
-            }
-            c3[c3.length-2]="None";
-            c3[c3.length-1]="Add new";
-        //Insurance Type c1
-            String query5 = "select count(*) from InsuranceType";
-            rs=c.s.executeQuery(query5);
-            rs.next();
-            c1 = new String[rs.getInt(1)+1];
-            c1[c1.length-1]="Add New Type";
-
+            agentName[agentName.length-2]="None";
+            agentName[agentName.length-1]="Add New";
         }catch(Exception e){
-            System.out.println("Initial connect AddPolicy");
+            System.out.println("Initial connect AddPolicy2");
         }
         
         
@@ -86,94 +63,52 @@ String[] nomineeMemory = new String[3];
         head.setFont(fp.headFont);
         head.setForeground(Color.BLACK);
         add(head);
+        int x=40;
 
-        int x=60;
-        for(i=0;i<7;i++){
+        JLabel premiumTitle = new JLabel("<html><u><b>Premium Details</b></u></html>");
+        premiumTitle.setFont(fp.subHeadFont);
+        premiumTitle.setForeground(Color.BLACK);
+        premiumTitle.setBounds(50,x,200,30);
+        x+=50;
+        add(premiumTitle);
+        
+        for(i=0;i<8;i++){
             arr[i]=new JLabel(labels[i]);
             arr[i].setFont(fp.forLabel);
             arr[i].setForeground(Color.BLACK);
-            arr[i].setBounds(20,x,150,30);
+            arr[i].setBounds(20,x,180,30);
             arr[i].setVisible(true);
             add(arr[i]);
-
+            if(i==1){
+                String[] c1 = {"ONE TIME" , "YEARLY" , "HALF YEARLY" , "QUARTERLY" , "MONTHLY"};// will come from db
+                carr=new JComboBox<String>(c1);
+                carr.setFont(fp.forLabel);
+                carr.addActionListener(this);
+                carr.setBounds(205,x,150,30);
+                x+=50;
+                carr.setBackground(Color.WHITE);
+                add(carr);
+                continue;
+            }
+            
+            tarr[i]= new JTextField();
+            tarr[i].setFont(fp.forLabel);
+            tarr[i].setForeground(Color.BLACK);
+            tarr[i].setBounds(205,x,150,30);
             x+=50;
+            add(tarr[i]);
         }
-        x=60;
-        //0
-        // String[] c0 = {"Jignesh", "Aayush","Mannan","Rina"};//policyHolder will come from db
-        carr[0]=new JComboBox<String>(c0);
-        carr[0].setFont(fp.forLabel);
-        carr[0].setBounds(175,x,150,30);
-        x+=50;
-        carr[0].setBackground(Color.WHITE);
-        add(carr[0]);
         
-        
-        // String[] c1 = {"ASSS","DDDD","Add new Type"};// will come from db
-        carr[1]=new JComboBox<String>(c1);
-        carr[1].setFont(fp.forLabel);
-        carr[1].addActionListener(this);
-        carr[1].addMouseListener(this);
-        carr[1].setBounds(175,x,150,30);
-        x+=50;
-        carr[1].setBackground(Color.WHITE);
-        add(carr[1]);
-
-        tarr[0]= new JTextField();
-        tarr[0].setFont(fp.forLabel);
-        tarr[0].setForeground(Color.BLACK);
-        tarr[0].setBounds(175,x,150,30);
-        x+=50;
-        add(tarr[0]);
-
-        tarr[1]= new JTextField();
-        tarr[1].setFont(fp.forLabel);
-        tarr[1].setForeground(Color.BLACK);
-        tarr[1].setBounds(175,x,150,30);
-        x+=50;
-        add(tarr[1]);
-
-        tarr[2]= new JTextField();
-        tarr[2].setFont(fp.forLabel);
-        tarr[2].setForeground(Color.BLACK);
-        tarr[2].setBounds(175,x,150,30);
-        x+=50;
-        add(tarr[2]);
-
-        // String[] c2 = {" LIC" , "KOTAK" , "NEW INDIA" , "STAR HEALTH" , "SBI"  , "add new Entry"};// will come from db//Company
-        carr[2]=new JComboBox<String>(c2);
-        carr[2].setFont(fp.forLabel);
-        carr[2].setBounds(175,x,150,30);
-        x+=50;
-        carr[2].setBackground(Color.WHITE);
-        carr[2].addActionListener(this);
-        add(carr[2]);
-
-
-
-        tarr[3]= new JTextField();
-        tarr[3].setFont(fp.forLabel);
-        tarr[3].setForeground(Color.BLACK);
-        tarr[3].setBounds(175,x,150,30);
-        x+=50;
-        add(tarr[3]);
-
-
-
-
-        
-
-        JLabel nHead = new JLabel("<html><u><b>Nominee Details</b></u></html>");
+        JLabel nHead = new JLabel("<html><u><b>Agent Details</b></u></html>");
         nHead.setFont(fp.subHeadFont);
-        
         nHead.setForeground(Color.BLACK);
         x-=10;
         nHead.setBounds(50,x,200,30);
-        x+=50;
+        x+=40;
         add(nHead);
         int m=x;
-//nominee subform
-        for(i=0;i<3;i++){
+//Agent subform
+        for(i=0;i<2;i++){
             nArr[i]= new JLabel(nLabel[i]);
             nArr[i].setFont(fp.forLabel);
             nArr[i].setForeground(Color.BLACK);
@@ -184,80 +119,32 @@ String[] nomineeMemory = new String[3];
             nTarr[i]= new JTextField();
             nTarr[i].setFont(fp.forLabel);
             nTarr[i].setForeground(Color.BLACK);
-            nTarr[i].setBounds(175,x,150,30);
+            nTarr[i].setBounds(205,x,150,30);
             x+=50;
             add(nTarr[i]);
 
             
         }
         nTarr[0].setVisible(false);
-        // c3 = {"Jignesh", "Aayush","Mannan","Rina","Add new"};//policyHolder will come from db
-        //if Add new then then from dropdown to textfield
-        //if not then auto fill rest 2 fields
-        //add contact to register page
-        carr[3]=new JComboBox<String>(c3);
-        carr[3].setFont(fp.forLabel);
-        carr[3].setBounds(175,m,150,30);
-        // x+=50;
-        carr[3].addActionListener(this);
-        carr[3].setBackground(Color.WHITE);
-        add(carr[3]);                
+        nTarr[0].setEnabled(false);
+        // String[] agentName={"Divyesh Shah" ,"Kalpana Shah","Add New","None"};
+        nCarr = new JComboBox<String>(agentName);
+        nCarr.setBounds(205,m,150,30);
+        nCarr.setBackground(Color.WHITE);
+        nCarr.setForeground(Color.BLACK);
+        nCarr.addActionListener(this);
+        nCarr.setFont(fp.forLabel);
+        add(nCarr);
+
         
-//Add new Insurance TYPe
-            //Render a form
-
-        subHead = new JLabel("<html><u>Add New Insurance Type</u></html>");
-        subHead.setFont(fp.sHeadFont);
-        subHead.setBounds(450,100,300,30);
-        subHead.setVisible(false);
-        add(subHead);
-        
-        nInsuranceType = new JTextField();
-        nInsuranceType.setForeground(Color.BLACK);
-        nInsuranceType.setFont(fp.forLabel);
-        nInsuranceType.setBounds(485,150,200,30);
-        nInsuranceType.setVisible(false);
-        add(nInsuranceType);
-
-        subnInsuranceType = new JButton("<html><u>Submit</u><html>");
-        subnInsuranceType.setBounds(510,200,150,30);
-        subnInsuranceType.setFont(fp.forLabel);
-        subnInsuranceType.setForeground(Color.WHITE);
-        subnInsuranceType.setBackground(Color.BLACK);
-        subnInsuranceType.setVisible(false);
-        subnInsuranceType.addActionListener(this);
-        add(subnInsuranceType);
-//New Company providing Insurance
-
-subHead2 = new JLabel("<html><u>Add New Company</u></html>");
-subHead2.setFont(fp.sHeadFont);
-subHead2.setBounds(450,100,300,30);
-subHead2.setVisible(false);
-add(subHead2);
-
-nCompanyTf = new JTextField();
-nCompanyTf.setForeground(Color.BLACK);
-nCompanyTf.setFont(fp.forLabel);
-nCompanyTf.setBounds(485,150,200,30);
-nCompanyTf.setVisible(false);
-add(nCompanyTf);
-
-nCompanyBut = new JButton("<html><u>Submit</u><html>");
-nCompanyBut.setBounds(510,200,150,30);
-nCompanyBut.setFont(fp.forLabel);
-nCompanyBut.setForeground(Color.WHITE);
-nCompanyBut.setBackground(Color.BLACK);
-nCompanyBut.setVisible(false);
-nCompanyBut.addActionListener(this);
-add(nCompanyBut);
 
         //Image
-        int ht=450,wdt=470;
+        int ht=450,wdt=440;
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/ocean.jpg"));
         Image i2 = i1.getImage().getScaledInstance(wdt,ht,Image.SCALE_DEFAULT);
         ImageIcon i3 = new ImageIcon(i2);
         image = new JLabel(i3);
-        image.setBounds(340,80,wdt,ht);
+        image.setBounds(370,80,wdt,ht);
         add(image);
         image.setVisible(true);
         // image.setVisible(false);
@@ -268,7 +155,7 @@ add(nCompanyBut);
         back.setForeground(Color.WHITE);
         back.setBackground(Color.BLACK);
         back.addActionListener(this);
-        back.setBounds(485,570,150,30);
+        back.setBounds(545,570,120,30);
         add(back);
 
 
@@ -277,8 +164,28 @@ add(nCompanyBut);
         next.setForeground(Color.WHITE);
         next.setBackground(Color.BLACK);
         next.addActionListener(this);
-        next.setBounds(655,570,150,30);
+        next.setBounds(685,570,120,30);
         add(next);
+
+        Cancel = new JButton("<html><u>Cancel</u></html>");
+        Cancel.setFont(fp.forLabel);
+        Cancel.setForeground(Color.WHITE);
+        Cancel.setBackground(Color.BLACK);
+        Cancel.addActionListener(this);
+        Cancel.setBounds(405,570,120,30);
+        Cancel.setVisible(false);
+        add(Cancel);
+
+        Submit = new JButton("<html><u>Submit</u></html>");
+        Submit.setFont(fp.forLabel);
+        Submit.setForeground(Color.WHITE);
+        Submit.setBackground(Color.BLACK);
+        Submit.addActionListener(this);
+        Submit.setBounds(685,570,120,30);
+        Submit.setVisible(false);
+        add(Submit);
+
+
 
         //mainPane
         setBounds(350,120,830,650);
@@ -288,134 +195,112 @@ add(nCompanyBut);
         setVisible(true);
     }
 //private methods    
-    private void dispInsuranceTypeForm(boolean a){
-        image.setVisible(!a);
-        subnInsuranceType.setVisible(a);
-        nInsuranceType.setVisible(a);
-        subHead.setVisible(a);
-        if(a){
-            nInsuranceType.requestFocus();
-        }
 
-        //disable everything else function call
-    }
-
-    private void dispCompanyNameForm(boolean a){
-        image.setVisible(!a);
-        subHead2.setVisible(a);
-        nCompanyTf.setVisible(a);
-        nCompanyBut.setVisible(a);
-        if(a){
-            nCompanyTf.requestFocus();
-        }
-        //disable everything else function call
-    }
-
-    private void DisableElse(boolean a){
-        // i=0;
-        for(i=0;i<tarr.length;i++){
-            tarr[i].setEnabled(!a);
-        }
-        for(i=0;i<nTarr.length;i++){
-            nTarr[i].setEnabled(!a);
-        }
-        for(i=0;i<carr.length;i++){
-            carr[i].setEnabled(!a);
-        }
-
-        
-    }
+    
 
     public void actionPerformed(ActionEvent ae){
         if(ae.getSource() == back){
-            System.out.println("BACK PRESSED");
+            ap.setVisible(true);
+            this.setVisible(false);
             
         }else if(ae.getSource() == next){
-            
-            //one array for policyDetails
-           
-            policyPg1[0]=(String)carr[0].getSelectedItem();
-            if(policyPg1[1]==null){
-                policyPg1[1]=(String)carr[1].getSelectedItem();
-            }
-            policyPg1[2]=tarr[0].getText();
-            policyPg1[3]=tarr[1].getText();
-            policyPg1[4]=tarr[2].getText();
-            if(policyPg1[5]==null){
-                policyPg1[5]=(String)carr[2].getSelectedItem();
-            }
-            
-            policyPg1[6]=tarr[3].getText();
+            new AddeCopy(userName,policyDetails[0],policyDetails[4],this).setVisible(true);
+            next.setVisible(false);
+            Submit.setVisible(true);
+            Cancel.setVisible(true);
 
-            //one Array for NomineeDetails
-            if(nTarr[0].isEnabled()){
-                nomineeMemory[0]=nTarr[0].getText();
+        }else if(ae.getSource() == Cancel){
+            String destPath = "db/"+userName +"/" +policyDetails[0] + "/"+policyDetails[4];
+            File fDel = new File(destPath);
+            if(fDel.delete()){
+                System.out.println("File Deleted Sucessfully!");
             }else{
-                nomineeMemory[0]=(String)carr[3].getSelectedItem();
+                System.out.println("!");
             }
-            nomineeMemory[1]=nTarr[1].getText();
-            nomineeMemory[2]=nTarr[2].getText();
+        }else if(ae.getSource() == Submit){
+            //save to db pg1 and pg2
             
-            //thsi.setVisible(false);
-            // new AddPolicy2(policyPg1,nomineeMemory).setVisible(true);
-
-
-            for(i=0;i<policyPg1.length;i++){
-                System.out.println(policyPg1[i]);
+            
+            String policyQuery="insert into policies values("+"'"+userName+"','";
+            for(i=0;i<policyDetails.length;i++){
+                policyQuery+=policyDetails[i]+"','";
             }
-            for(i=0;i<nomineeMemory.length;i++){
-                System.out.println(nomineeMemory[i]);
-            }
+            System.out.println(policyQuery);
 
-        }else if(ae.getSource() == subnInsuranceType){  //button for insurance Type subForm
-            dispInsuranceTypeForm(false);
-            DisableElse(false);
-            //saving in arrMemory
-            policyPg1[1]=nInsuranceType.getText();
-        }else  if(ae.getSource() == carr[1]){
-            String selItem = (String)carr[1].getSelectedItem();
-            if(selItem.equals("Add New Type")){
-                dispInsuranceTypeForm(true);
-                DisableElse(true);
+            for(i=0;i<tarr.length;i++){
+                if(i==1){
+                    policyQuery+=(String)carr.getSelectedItem()+"','";
+                    continue;
+                }
+                policyQuery+=tarr[i].getText()+"','";
             }
-        }else if(ae.getSource() == carr[2]){
-            String selItem = (String)carr[2].getSelectedItem();
-            if(selItem.equals("add new Entry")){
-                dispCompanyNameForm(true);
-                DisableElse(true);
+            for(i=0;i<3;i++){
+                policyQuery+=nomineeDetails[i]+"','";
             }
-        }else if(ae.getSource() == nCompanyBut){    //new Company Button
-            dispCompanyNameForm(false);
-            DisableElse(false);
-            //saving in arrMemory
-            policyPg1[5]=nCompanyTf.getText();
-
-        }else if(ae.getSource() == carr[3]){
-            String selItem = (String)carr[3].getSelectedItem();
-            if(selItem.equals("Add new")){
-                carr[3].setVisible(false);
+            policyQuery+=eCopyFlag+"',";
+            //agentDetails left!
+            if(nTarr[0].isEnabled()){
+                String agentQuery = "insert into agent(name,ContactNO) values('";
+                if(nTarr[0].isEnabled()){
+                    agentQuery+=nTarr[0].getText()+"','";
+                }else{
+                    agentQuery+=nCarr.getSelectedItem()+"','";
+                }
+                agentQuery+=nTarr[1].getText()+"')";
+                System.out.println(agentQuery);
+                Conn c = new Conn();
+                try{
+                    c.s.executeUpdate(agentQuery);
+                    ResultSet rs = c.s.executeQuery("select LAST_INSERT_ID()");
+                    rs.next();
+                    policyQuery+=rs.getInt(1)+")";
+                    System.out.println("Agent Sucess");
+                }catch(Exception e){
+                    System.out.println("Agent Fail");
+                    e.printStackTrace();
+                }
+            }else {
+                String selItem=(String)nCarr.getSelectedItem();
+                if(selItem.equals("None")){
+                    policyQuery+=Integer.toString(-1)+")";
+                }else{
+                   int id=nCarr.getSelectedIndex()+1; 
+                   policyQuery+=id+")";
+                }
+            }
+            //policy
+            try{
+                Conn c = new Conn();
+                c.s.executeUpdate(policyQuery);
+                System.out.println("Added to db!");
+            }catch(Exception e){
+                System.out.println("error in policy");
+            }
+            System.out.println("++++++++++++++");
+            System.out.println(policyQuery);
+        }else if(ae.getSource() == nCarr){
+            String selItem = (String)nCarr.getSelectedItem();
+            if(selItem.equals("Add New")){
+                nCarr.setVisible(false);
                 nTarr[0].setVisible(true);
+                nTarr[0].setEnabled(true);
                 nTarr[0].requestFocus();
-                //will save name at next click itself
             }else if(selItem.equals("None")){
                 nTarr[1].setText("            -");
-                nTarr[2].setText("            -");
+                
+            }else{
+                Conn c = new Conn();
+                String fetchContactNO = "select ContactNO from agent where agentID='"+(nCarr.getSelectedIndex()+1)+"'";
+                try{
+                    ResultSet rs = c.s.executeQuery(fetchContactNO);
+                    rs.next();
+                    nTarr[1].setText(Integer.toString(rs.getInt(1)));
+                    nTarr[1].setEnabled(false);
+                }catch(Exception e){
+                    System.out.println("Error in displaying contactno of agent");
+                }
             }
-            else{
-                //fille the 2 blocks below and disable them
-                //extra make an algo to determine the correct relation also add contact no.
-                // try{
-                //     Conn c = new Conn();
-                //     String relationQuery ="select relation from members where name='"+selItem+"' and username='"+
-                //     userName+"'";
-                //     ResultSet rs = c.s.executeQuery(relationQuery);
-                //     rs.next();
-                //     nTarr[1].setText(rs.getString(1));
-                // }catch(Exception e){
-                //     System.out.println("In carr[3] connect");
-                // }
-            }
-        }
+        }    
     }
 
 
@@ -423,52 +308,6 @@ add(nCompanyBut);
 
 
 
-    public static void main(String[] args){
-        new AddPolicy2("Manraj");
-    }
+    
 
-    @Override
-    public void mouseClicked(java.awt.event.MouseEvent e) {
-        // TODO Auto-generated method stub
-       
-        
-        
-    }
-
-    @Override
-    public void mousePressed(java.awt.event.MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-        
-    }
-
-    @Override
-    public void mouseReleased(java.awt.event.MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void mouseEntered(java.awt.event.MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void mouseExited(java.awt.event.MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void mouseDragged(java.awt.event.MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void mouseMoved(java.awt.event.MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
 }

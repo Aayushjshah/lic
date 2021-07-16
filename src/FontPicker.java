@@ -4,4 +4,5 @@ public class FontPicker {
     public Font headFont = new Font("Serif" , Font.ITALIC , 32);
     public Font subHeadFont = new Font("Serif" , Font.ITALIC , 22);
     public Font sHeadFont = new Font("Serif" , Font.ITALIC , 26);
+    public Font eCopyFont = new Font("Serif" , Font.PLAIN , 26);
 }

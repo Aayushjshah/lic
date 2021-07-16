@@ -1,8 +1,9 @@
 import java.io.File;
 public class CreateDir {
-   public CreateDir(String memName) {
+   public CreateDir(){}
+   public void Dirmaker(String usrNm,String memName) {
       try {
-         String fName = "designing/" + memName;
+         String fName = "db/"+usrNm +"/" +memName;
          File file = new File(fName);
          // file.createNewFile();
          boolean flag = file.mkdir();
@@ -11,10 +12,19 @@ public class CreateDir {
          e.printStackTrace();
       }
    }
-
-   public static void main(String[] args) {
-      System.out.println("CreateDir");
-      new CreateDir("A");
-
+   public void Dirmaker(String memName) {
+      try {
+         String fName = "db/"  +memName;
+         File file = new File(fName);
+         // file.createNewFile();
+         boolean flag = file.mkdir();
+         System.out.print("Directory created? " + flag);
+      } catch(Exception e) {
+         e.printStackTrace();
+      }
+   }
+   public static void main(String[] args){
+      CreateDir cd  = new CreateDir();
+      cd.Dirmaker("Manraj","manan");
    }
 }

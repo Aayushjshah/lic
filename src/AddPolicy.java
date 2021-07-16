@@ -8,7 +8,7 @@ import java.awt.Image;
 import java.awt.event.*;
 import java.sql.ResultSet;
 
-public class AddPolicy extends JFrame implements ActionListener,MouseInputListener{
+public class AddPolicy extends JFrame implements ActionListener{
     JLabel[] arr = new JLabel[7];
     String[] labels = {"Policy Holder" , "Insurance Type" , "Policy NO." ,"Policy ID", "Policy Name" , "Company" , "Sum Assured"};
     JTextField[] tarr = new JTextField[4];
@@ -33,10 +33,11 @@ public class AddPolicy extends JFrame implements ActionListener,MouseInputListen
 //tempSaveVariables
 String[] policyPg1 = new String[7];
 String[] nomineeMemory = new String[3];
-
-    public AddPolicy(String username){
+AddPolicy ap2;
+    public AddPolicy(String username,AddPolicy app2){
         //inital db connect to fill up dropdowns
         userName=username;
+        ap2=app2;
         Conn c = new Conn();
         try{
             //company c2
@@ -112,7 +113,6 @@ String[] nomineeMemory = new String[3];
         carr[1]=new JComboBox<String>(c1);
         carr[1].setFont(fp.forLabel);
         carr[1].addActionListener(this);
-        carr[1].addMouseListener(this);
         carr[1].setBounds(175,x,150,30);
         x+=50;
         carr[1].setBackground(Color.WHITE);
@@ -355,8 +355,14 @@ add(nCompanyBut);
             nomineeMemory[1]=nTarr[1].getText();
             nomineeMemory[2]=nTarr[2].getText();
             
-            //thsi.setVisible(false);
-            // new AddPolicy2(policyPg1,nomineeMemory).setVisible(true);
+            this.setVisible(false);
+            if(ap2==null){
+                new AddPolicy2(userName,policyPg1,nomineeMemory,this).setVisible(true);    
+            }else{
+                ap2.setVisible(true);
+                this.setVisible(false);
+            }
+            
 
 
             for(i=0;i<policyPg1.length;i++){
@@ -423,51 +429,7 @@ add(nCompanyBut);
 
 
     public static void main(String[] args){
-        new AddPolicy("Manraj");
-    }
-
-    @Override
-    public void mouseClicked(java.awt.event.MouseEvent e) {
-        // TODO Auto-generated method stub
-       
-        
-        
-    }
-
-    @Override
-    public void mousePressed(java.awt.event.MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-        
-    }
-
-    @Override
-    public void mouseReleased(java.awt.event.MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void mouseEntered(java.awt.event.MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void mouseExited(java.awt.event.MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void mouseDragged(java.awt.event.MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void mouseMoved(java.awt.event.MouseEvent e) {
-        // TODO Auto-generated method stub
-        
+        new AddPolicy("Manraj",null);
     }
 }
+    

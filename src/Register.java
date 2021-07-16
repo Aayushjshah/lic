@@ -249,7 +249,8 @@ public class Register extends JFrame implements ActionListener,FocusListener,Key
                 e.printStackTrace();
             }
 
-
+            CreateDir cd = new CreateDir();
+            cd.Dirmaker(tarr[4].getText());
 
 
 
