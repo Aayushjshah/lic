@@ -4,7 +4,11 @@ import java.awt.Image;
 import java.awt.event.*;
 import java.io.File;
 import java.sql.ResultSet;
-
+//changes to be made
+// connect insuranceType to DB and fetch details from there
+//rm main method
+//name the ecopy with policy name aswell as id
+//next button be disabled until all the details are filled
 public class AddPolicy2 extends JFrame implements ActionListener{
     JLabel[] arr = new JLabel[8];
     String[] labels = {"First premium","Premium Cycle", "Installment Premium"  , "Last Premium Date",
