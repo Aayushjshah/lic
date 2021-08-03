@@ -28,7 +28,6 @@ public class App extends JFrame implements ActionListener{
         head.setForeground(Color.BLACK);
         head.setFont(new Font("Serif" , Font.ITALIC , 36));
         add(head);
-
         Font forLabel = new Font("Tahoma" , Font.ITALIC , 22 );
         // Login
         b1 = new JButton("<html><u>Log In</u></html>");
@@ -55,7 +54,7 @@ public class App extends JFrame implements ActionListener{
         t1.setVisible(false);
         add(t1);
 
-
+        
         t2 = new JPasswordField();
         t2.setFont(forLabel);
         t2.setBounds(550 ,220 ,150,30);

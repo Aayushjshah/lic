@@ -1,7 +1,5 @@
 import javax.swing.*;
-import javax.swing.event.MouseInputListener;
 
-import org.w3c.dom.events.MouseEvent;
 
 import java.awt.Color;
 import java.awt.Image;
@@ -29,7 +27,7 @@ public class AddPolicy extends JFrame implements ActionListener{
     FontPicker fp = new FontPicker();
     int i;
     String userName;
-
+// JPanel
 //tempSaveVariables
 String[] policyPg1 = new String[7];
 String[] nomineeMemory = new String[3];
