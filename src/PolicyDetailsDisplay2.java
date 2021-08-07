@@ -1,4 +1,3 @@
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 
@@ -8,35 +7,25 @@ import javax.swing.border.Border;
 import javax.swing.event.MouseInputListener;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 
-
-public class PolicyDetailsDisplay2 extends JFrame implements MouseInputListener {
+public class PolicyDetailsDisplay2 extends JPanel implements MouseInputListener {
     //Note : actionListener doesnt work for container
+    public JPanel myPanel = new JPanel();
+    CardLayoutMgr clm;
     JButton[] lArr = new JButton[5];
-    
+    // CardLayout cl;
     JPanel[] p2= new JPanel[4] ;
     int i=0;
     FontPicker fp = new FontPicker();
-    public PolicyDetailsDisplay2(){
-        System.out.println("Sincerity");
-        JPanel p1 = new JPanel();
-        p1.setBackground(new Color(230, 255, 230));
-        p1.setPreferredSize(new Dimension(220,150));
-        p1.setVisible(true);
-        p1.setBounds(0,0,220,650);
-        p1.setLayout(null);
-        // add(p1,BorderLayout.WEST);
-        add(p1);
-        int j=50;
-        for(;i<5;i++){
-            lArr[i]=new JButton("Label"+i);
-            lArr[i].setFont(fp.forLabel);
-            lArr[i].setBounds(20, j, 120, 30);
-            p1.add(lArr[i]);
-            j+=50;
-        }
+    public PolicyDetailsDisplay2(CardLayoutMgr cll){
+        // cl=cll;
+        clm=cll;
+        System.out.println("Disp2");
+        myPanel.setLayout(null);
+        myPanel.setBackground(Color.WHITE);
+        myPanel.setBounds(0,0,640,650);
+        
         
         //pilot
         int x=50;
@@ -44,13 +33,13 @@ public class PolicyDetailsDisplay2 extends JFrame implements MouseInputListener 
         p2[i]= new JPanel();
         // JPanel p2[i] = new RoundedBorderTest()
         p2[i].setBackground(Color.WHITE);
-        p2[i].setBounds(230,x,600,100);
+        p2[i].setBounds(10,x,600,100);
         p2[i].setLayout(null);
         Border b2 = new RoundedBorder(fp.panelColor,50);
         p2[i].setBorder(b2);
         p2[i].addMouseListener(this);
         
-        add(p2[i]);
+        myPanel.add(p2[i]);
         
 
         //inside
@@ -98,21 +87,12 @@ public class PolicyDetailsDisplay2 extends JFrame implements MouseInputListener 
         pol4.setForeground(Color.WHITE);
         p2[i].add(pol4);
         }
-        setBounds(350,120,860,650);
-        setLayout(null);
-        // this.setUndecorated(true);
-        getContentPane().setBackground(Color.WHITE);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setVisible(true);
-    }
 
-    public static void main(String[] args){
-        new PolicyDetailsDisplay2();
+        
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        // TODO Auto-generated method stub
         
     }
 
@@ -129,7 +109,8 @@ public class PolicyDetailsDisplay2 extends JFrame implements MouseInputListener 
             if(e.getSource() ==p2[i]){
                 //change the layout
                 // p2[i].setBorder(new RoundedBorder(fp.panelColor,50));
-                System.out.println("NEXT");
+                System.out.println(i+"clicked");
+                clm.setr("ipdd1");
             }
         }
     }
