@@ -8,28 +8,36 @@ import javax.swing.event.MouseInputListener;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
-
+import javax.swing.JScrollPane;
+import java.awt.Dimension;
+import javax.swing.border.EmptyBorder;
 public class PolicyDetailsDisplay2 extends JPanel implements MouseInputListener {
     //Note : actionListener doesnt work for container
+    
     public JPanel myPanel = new JPanel();
+    // public JScrollPane jsp = new JScrollPane(myPanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    public JScrollPane jsp = new ModernScrollPane(myPanel);
+    
     CardLayoutMgr clm;
     JButton[] lArr = new JButton[5];
     // CardLayout cl;
-    JPanel[] p2= new JPanel[4] ;
+    JPanel[] p2= new JPanel[10] ;
     int i=0;
     FontPicker fp = new FontPicker();
     public PolicyDetailsDisplay2(CardLayoutMgr cll){
         // cl=cll;
         clm=cll;
+        
+        // clm.varSize(0,-100);
         System.out.println("Disp2");
         myPanel.setLayout(null);
         myPanel.setBackground(Color.WHITE);
-        myPanel.setBounds(0,0,640,650);
         
-        
+        // jsp.setPreferredSize(new Dimension(640,50));
+        jsp.setBorder(new EmptyBorder(0,0,0,0));
         //pilot
         int x=50;
-        for(i=0;i<4;i++,x+=130){
+        for(i=0;i<5;i++,x+=130){
         p2[i]= new JPanel();
         // JPanel p2[i] = new RoundedBorderTest()
         p2[i].setBackground(Color.WHITE);
@@ -38,7 +46,6 @@ public class PolicyDetailsDisplay2 extends JPanel implements MouseInputListener 
         Border b2 = new RoundedBorder(fp.panelColor,50);
         p2[i].setBorder(b2);
         p2[i].addMouseListener(this);
-        
         myPanel.add(p2[i]);
         
 
@@ -87,7 +94,8 @@ public class PolicyDetailsDisplay2 extends JPanel implements MouseInputListener 
         pol4.setForeground(Color.WHITE);
         p2[i].add(pol4);
         }
-
+        myPanel.setBounds(0,0,640,x);
+        myPanel.setPreferredSize(new Dimension(640,x));
         
     }
 

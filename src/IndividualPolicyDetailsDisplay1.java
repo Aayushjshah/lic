@@ -1,14 +1,21 @@
 import javax.swing.JPanel;
 import java.awt.Color;
 import javax.swing.border.Border;
+import javax.swing.event.MouseInputListener;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import java.awt.Image;
+import java.awt.event.MouseEvent;
 
-public class IndividualPolicyDetailsDisplay1 extends JPanel{
+
+
+
+public class IndividualPolicyDetailsDisplay1 extends JPanel implements MouseInputListener{
     CardLayoutMgr clm;
     FontPicker fp= new FontPicker();
     Border b3 = new RoundedBorder(fp.panelColor,50);
+    JLabel bl1,bl2;
+    
 //===================    
     String[] lNameString1 =  {"Name of the policy","PolicyId","Plan Name","PolicyNo","Company","sumInsured"};
     JLabel[]  lName1 = new JLabel[6];
@@ -42,7 +49,7 @@ public class IndividualPolicyDetailsDisplay1 extends JPanel{
 
     IndividualPolicyDetailsDisplay1(CardLayoutMgr cll){
         clm=cll;
-
+        
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/ocean2.jpg"));
         Image i2 = i1.getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT);
         ImageIcon i3 = new ImageIcon(i2);
@@ -230,11 +237,24 @@ JPanel in4 = new JPanel();
         in5.add(lMaturityData1[i]);
         x+=70;
     }
-    
-    ImageIcon b1 = new ImageIcon(ClassLoader.getSystemResource("icons/eCopyYellow.png"));
-    JLabel bl1 = new JLabel(b1);
-    bl1.setBounds(0,x,200,50);
+    int h=125;
+    int w=45;
+    ImageIcon b1 = new ImageIcon(ClassLoader.getSystemResource("icons/eCopyb4.png"));
+    Image b12 = b1.getImage().getScaledInstance(h,w, Image.SCALE_DEFAULT);
+    ImageIcon b13 = new ImageIcon(b12);
+    bl1 = new JLabel(b13);
+    bl1.setBounds(20,x,h,w);
+    bl1.addMouseListener(this);
     in5.add(bl1);
+
+    ImageIcon b2 = new ImageIcon(ClassLoader.getSystemResource("icons/eCopyAftr.png"));
+    Image b22 = b2.getImage().getScaledInstance(h,w, Image.SCALE_DEFAULT);
+    ImageIcon b23 = new ImageIcon(b22);
+    bl2 = new JLabel(b23);
+    bl2.setBounds(20,x,h,w);
+    bl2.addMouseListener(this);
+    bl2.setVisible(false);
+    in5.add(bl2);
 
 
 
@@ -248,5 +268,59 @@ JPanel in4 = new JPanel();
     // public static void main(String[] args){
     //     new IndividualPolicyDetailsDisplay1(clm);
     // }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // TODO Auto-generated method stub
+        if(e.getSource()==bl1){
+            System.out.println("Show eCopy!");
+        }
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // TODO Auto-generated method stub
+        if(e.getSource() == bl1 || e.getSource() == bl2){
+            // System.out.println();
+            bl1.setVisible(false);;
+            bl2.setVisible(true);
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // TODO Auto-generated method stub
+        if(e.getSource() == bl1 || e.getSource() == bl2){
+            // System.out.println();
+            bl1.setVisible(true);
+            bl2.setVisible(false);
+        }
+        
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
      
 }

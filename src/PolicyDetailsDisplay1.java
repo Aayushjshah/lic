@@ -8,26 +8,35 @@ import javax.swing.event.MouseInputListener;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
-import java.awt.CardLayout;
-
+import javax.swing.JScrollPane;
+import java.awt.Dimension;
+import javax.swing.border.EmptyBorder;
 public class PolicyDetailsDisplay1 extends JPanel implements MouseInputListener {
     //Note : actionListener doesnt work for container
-    JButton[] lArr = new JButton[5];
-    CardLayout cl = new CardLayout();
+    
+    public JPanel myPanel = new JPanel();
+    // public JScrollPane jsp = new JScrollPane(myPanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    public JScrollPane jsp = new ModernScrollPane(myPanel);
     CardLayoutMgr clm;
-    JPanel[] p2= new JPanel[4] ;
+    JButton[] lArr = new JButton[5];
+    // CardLayout cl;
+    JPanel[] p2= new JPanel[10] ;
     int i=0;
     FontPicker fp = new FontPicker();
     public PolicyDetailsDisplay1(CardLayoutMgr cll){
+        // cl=cll;
         clm=cll;
-        setLayout(null);
-        setBackground(Color.WHITE);
-        setBounds(0,0,640,650);
         
+        // clm.varSize(0,-100);
+        System.out.println("Disp2");
+        myPanel.setLayout(null);
+        myPanel.setBackground(Color.WHITE);
         
+        // jsp.setPreferredSize(new Dimension(640,50));
+        jsp.setBorder(new EmptyBorder(0,0,0,0));
         //pilot
         int x=50;
-        for(i=0;i<4;i++,x+=130){
+        for(i=0;i<10;i++,x+=130){
         p2[i]= new JPanel();
         // JPanel p2[i] = new RoundedBorderTest()
         p2[i].setBackground(Color.WHITE);
@@ -36,8 +45,7 @@ public class PolicyDetailsDisplay1 extends JPanel implements MouseInputListener 
         Border b2 = new RoundedBorder(fp.panelColor,50);
         p2[i].setBorder(b2);
         p2[i].addMouseListener(this);
-        
-        add(p2[i]);
+        myPanel.add(p2[i]);
         
 
         //inside
@@ -56,7 +64,7 @@ public class PolicyDetailsDisplay1 extends JPanel implements MouseInputListener 
         relation.setBounds(400,5,70,30);
         p2[i].add(relation);
 
-        JLabel relationVal = new JLabel("<html><u><b>19108</b></u></html>");
+        JLabel relationVal = new JLabel("<html><u><b>191080067</b></u></html>");
         relationVal.setFont(fp.forLabel);
         relationVal.setBounds(480,5,120,30);
         p2[i].add(relationVal);
@@ -85,7 +93,8 @@ public class PolicyDetailsDisplay1 extends JPanel implements MouseInputListener 
         pol4.setForeground(Color.WHITE);
         p2[i].add(pol4);
         }
-
+        myPanel.setBounds(0,0,640,x);
+        myPanel.setPreferredSize(new Dimension(640,x));
         
     }
 
@@ -95,9 +104,9 @@ public class PolicyDetailsDisplay1 extends JPanel implements MouseInputListener 
     }
 
     @Override
-    
     public void mousePressed(MouseEvent e) {
-        // TODO Auto-generated method stub   
+        // TODO Auto-generated method stub
+        
     }
 
     @Override
@@ -107,6 +116,7 @@ public class PolicyDetailsDisplay1 extends JPanel implements MouseInputListener 
             if(e.getSource() ==p2[i]){
                 //change the layout
                 // p2[i].setBorder(new RoundedBorder(fp.panelColor,50));
+                System.out.println(i+"clicked");
                 clm.setr("ipdd1");
             }
         }
