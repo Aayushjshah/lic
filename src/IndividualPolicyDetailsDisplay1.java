@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
-
+import java.sql.*;
 
 
 
@@ -19,7 +19,8 @@ public class IndividualPolicyDetailsDisplay1 extends JPanel implements MouseInpu
 //===================    
     String[] lNameString1 =  {"Name of the policy","PolicyId","Plan Name","PolicyNo","Company","sumInsured"};
     JLabel[]  lName1 = new JLabel[6];
-    String[] lDataString1 =  {"JeevanKishor","191080067","jeevanSural","1","LIC","5000000"};
+    // String[] lDataString1 =  {"JeevanKishor","191080067","jeevanSural","1","LIC","5000000"};
+    String[] lDataString1 =  new String[6];
     JLabel[]  lData1 = new JLabel[6];
     //====================================
     String[] lAgentString1 =  {"Name","Contact No."};
@@ -46,10 +47,23 @@ public class IndividualPolicyDetailsDisplay1 extends JPanel implements MouseInpu
     
     
     int i=0;//iterator variable
-
-    IndividualPolicyDetailsDisplay1(CardLayoutMgr cll){
+    String username,policyId;
+    IndividualPolicyDetailsDisplay1(CardLayoutMgr cll,String usrnm , String polId){
         clm=cll;
-        
+        username=usrnm;
+        policyId=polId;
+//=======================
+        Conn c = new Conn();
+        String query = "select * from policies where username='"+username+"' and policyId='"+policyId+"'";
+        try{
+            ResultSet rs = c.s.executeQuery(query);
+            while(rs.next()){
+
+            }
+        }catch(Exception e){
+            System.out.println("in ippd1");
+        }
+//=======================
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/ocean2.jpg"));
         Image i2 = i1.getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT);
         ImageIcon i3 = new ImageIcon(i2);

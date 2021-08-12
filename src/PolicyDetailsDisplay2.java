@@ -5,7 +5,7 @@ import javax.swing.JButton;
 
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputListener;
-
+import java.sql.*;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import javax.swing.JScrollPane;
@@ -17,27 +17,63 @@ public class PolicyDetailsDisplay2 extends JPanel implements MouseInputListener 
     public JPanel myPanel = new JPanel();
     // public JScrollPane jsp = new JScrollPane(myPanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     public JScrollPane jsp = new ModernScrollPane(myPanel);
-    
-    CardLayoutMgr clm;
+    String[] policyNames,policyIds,insuranceTypes,Company,nextPremiumDates;
+    CardLayoutMgr clm;String username,member;
     JButton[] lArr = new JButton[5];
     // CardLayout cl;
     JPanel[] p2= new JPanel[10] ;
-    int i=0;
+    int i=0,cnt;
     FontPicker fp = new FontPicker();
-    public PolicyDetailsDisplay2(CardLayoutMgr cll){
-        // cl=cll;
+    public PolicyDetailsDisplay2(CardLayoutMgr cll,String usernm,String memberName){
+        username=usernm;member=memberName;
         clm=cll;
-        
-        // clm.varSize(0,-100);
+//dbconnect
+//getting the count
+        Conn c = new Conn();
+        String countQuery = "select count(*) from policies where username='"+username+"' and holder='"+member+
+        "'";
+        String data = "select policyName,policyId,insuranceType,Company from policies where"+
+        " username='"+username+"' and holder='"+member+"'";
+        System.out.println(data);
+        try{
+            ResultSet rs = c.s.executeQuery(countQuery);
+            rs.next();
+            cnt = Integer.parseInt(rs.getString(1));
+            policyNames = new String[cnt];
+            policyIds = new String[cnt];
+            insuranceTypes= new String[cnt];
+            Company=new String[cnt];
+            nextPremiumDates= new String[cnt];
+            try{
+            rs=c.s.executeQuery(data);
+            int k=0;
+            while(rs.next()){
+                policyNames[k]=rs.getString(1);
+                policyIds[k]=rs.getString(2);
+                insuranceTypes[k]=rs.getString(3);
+                Company[k]=rs.getString(4);
+                // nextPremiumDates[k]=rs.getString(6);
+                k++;
+            }
+            }catch(Exception e){
+                System.out.println("error pdd2 populate");    
+                e.printStackTrace();
+            }
+
+        }catch(Exception e){
+            System.out.println("error pdd2 countDb");
+            
+        }
+//=========================
+
         System.out.println("Disp2");
         myPanel.setLayout(null);
         myPanel.setBackground(Color.WHITE);
-        
-        // jsp.setPreferredSize(new Dimension(640,50));
+    
         jsp.setBorder(new EmptyBorder(0,0,0,0));
         //pilot
         int x=50;
-        for(i=0;i<5;i++,x+=130){
+        for(i=0;i<cnt;i++,x+=130){
         p2[i]= new JPanel();
         // JPanel p2[i] = new RoundedBorderTest()
         p2[i].setBackground(Color.WHITE);
@@ -54,8 +90,8 @@ public class PolicyDetailsDisplay2 extends JPanel implements MouseInputListener 
         name.setFont(fp.forLabel);
         name.setBounds(20,5,60,30);
         p2[i].add(name);
-        
-        JLabel nameVal = new JLabel("<html><b><u>Jeevan DRIVING</u></b></html>");
+        String nameStr ="<html><b><u>"+policyNames[i]+"</u></b></html>";
+        JLabel nameVal = new JLabel(nameStr);
         nameVal.setFont(fp.forLabel);
         nameVal.setBounds(85,5,160,30);
         p2[i].add(nameVal);
@@ -64,33 +100,28 @@ public class PolicyDetailsDisplay2 extends JPanel implements MouseInputListener 
         relation.setFont(fp.forLabel);
         relation.setBounds(400,5,70,30);
         p2[i].add(relation);
-
-        JLabel relationVal = new JLabel("<html><u><b>191080067</b></u></html>");
+        String idStr ="<html><b><u>"+policyIds[i]+"</u></b></html>";
+        JLabel relationVal = new JLabel(idStr);
         relationVal.setFont(fp.forLabel);
         relationVal.setBounds(480,5,120,30);
         p2[i].add(relationVal);
-
-        JLabel pol1 = new JLabel("=>Drivng Insurance");
+            int y=10;
+        JLabel pol1 = new JLabel("=>"+insuranceTypes[i]);
         pol1.setFont(fp.forLabel);
-        pol1.setBounds(10,50,150,30);
+        pol1.setBounds(y,50,180,30);
         pol1.setForeground(Color.WHITE);
         p2[i].add(pol1);
-
-        JLabel pol2 = new JLabel("=>LIC");
+        y+=210;
+        JLabel pol2 = new JLabel("=>"+Company[i]);
         pol2.setFont(fp.forLabel);
-        pol2.setBounds(160,50,150,30);
+        pol2.setBounds(y,50,220,30);
         pol2.setForeground(Color.WHITE);
-        p2[i].add(pol2);
-
-        JLabel pol3 = new JLabel("=>Rs.5400");
-        pol3.setFont(fp.forLabel);
-        pol3.setBounds(310,50,150,30);
-        pol3.setForeground(Color.WHITE);
-        p2[i].add(pol3);
-
-        JLabel pol4 = new JLabel("=>12-02-2022");
+        p2[i].add(pol2);        
+        y+=240;    
+        nextPremiumDates[i]="12-12-12";
+        JLabel pol4 = new JLabel("=>"+nextPremiumDates[i]);
         pol4.setFont(fp.forLabel);
-        pol4.setBounds(460,50,150,30);
+        pol4.setBounds(y,50,120,30);
         pol4.setForeground(Color.WHITE);
         p2[i].add(pol4);
         }

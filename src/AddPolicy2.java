@@ -11,8 +11,8 @@ import java.sql.ResultSet;
 //next button be disabled until all the details are filled
 public class AddPolicy2 extends JFrame implements ActionListener{
     JLabel[] arr = new JLabel[8];
-    String[] labels = {"First premium","Premium Cycle", "Installment Premium"  , "Last Premium Date",
-                        "No.of yrs prm to be Paid","From Bank A/C","Maturity Amount" , "Date of Maturity"};
+    String[] labels = {"First premium","1st premium date","Premium Cycle", "Installment Premium"  , "Last Premium Date",
+                        "From Bank A/C","Maturity Amount" , "Date of Maturity"};
     JTextField[] tarr = new JTextField[8];
     JComboBox<String>carr,nCarr;//last for nominee
     // String[] c0,c1,c2,c3;
@@ -83,7 +83,7 @@ String[] policyDetails,nomineeDetails;
             arr[i].setBounds(20,x,180,30);
             arr[i].setVisible(true);
             add(arr[i]);
-            if(i==1){
+            if(i==2){
                 String[] c1 = {"ONE TIME" , "YEARLY" , "HALF YEARLY" , "QUARTERLY" , "MONTHLY"};// will come from db
                 carr=new JComboBox<String>(c1);
                 carr.setFont(fp.forLabel);
@@ -232,7 +232,7 @@ String[] policyDetails,nomineeDetails;
             System.out.println(policyQuery);
 
             for(i=0;i<tarr.length;i++){
-                if(i==1){
+                if(i==2){
                     policyQuery+=(String)carr.getSelectedItem()+"','";
                     continue;
                 }

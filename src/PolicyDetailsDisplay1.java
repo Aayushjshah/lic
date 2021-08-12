@@ -46,6 +46,7 @@ public class PolicyDetailsDisplay1 extends JPanel implements MouseInputListener 
             while(rs.next()){
                 nameArr[k]=rs.getString(1);
                 relationArr[k]=rs.getString(2);
+                //fetch policies
                 k++;
             }
         }catch(Exception e){
@@ -95,30 +96,23 @@ public class PolicyDetailsDisplay1 extends JPanel implements MouseInputListener 
         relationVal.setFont(fp.forLabel);
         relationVal.setBounds(480,5,120,30);
         p2[i].add(relationVal);
-
-        JLabel pol1 = new JLabel("=>Drivng Insurance");
-        pol1.setFont(fp.forLabel);
-        pol1.setBounds(10,50,150,30);
-        pol1.setForeground(Color.WHITE);
-        p2[i].add(pol1);
-
-        JLabel pol2 = new JLabel("=>LIC");
-        pol2.setFont(fp.forLabel);
-        pol2.setBounds(160,50,150,30);
-        pol2.setForeground(Color.WHITE);
-        p2[i].add(pol2);
-
-        JLabel pol3 = new JLabel("=>Rs.5400");
-        pol3.setFont(fp.forLabel);
-        pol3.setBounds(310,50,150,30);
-        pol3.setForeground(Color.WHITE);
-        p2[i].add(pol3);
-
-        JLabel pol4 = new JLabel("=>12-02-2022");
-        pol4.setFont(fp.forLabel);
-        pol4.setBounds(460,50,150,30);
-        pol4.setForeground(Color.WHITE);
-        p2[i].add(pol4);
+//4 policies
+        String policyQuery = "select policyName from policies where username='"+username+"' and holder='"+
+        nameArr[i]+"' limit 3";
+        try{
+            ResultSet rs1 = c.s.executeQuery(policyQuery);
+            int y=10;
+            while(rs1.next()){
+                JLabel pol1 = new JLabel("=>Drivng Insurance");
+                pol1.setFont(fp.forLabel);
+                pol1.setBounds(y,50,180,30);
+                pol1.setForeground(Color.WHITE);
+                p2[i].add(pol1);
+                y+=200;
+                
+            }
+        }catch(Exception e){System.out.println("policyName db error!");}
+//====================
         }
         myPanel.setBounds(0,0,640,x);
         myPanel.setPreferredSize(new Dimension(640,x));
@@ -141,10 +135,8 @@ public class PolicyDetailsDisplay1 extends JPanel implements MouseInputListener 
         // TODO Auto-generated method stub
         for(int i =0 ; i<4;i++){
             if(e.getSource() ==p2[i]){
-                //change the layout
-                // p2[i].setBorder(new RoundedBorder(fp.panelColor,50));
                 System.out.println(i+"clicked");
-                clm.setr("ipdd1");
+                clm.setr("pdd2");
             }
         }
     }
