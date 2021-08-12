@@ -5,7 +5,7 @@ import javax.swing.JButton;
 
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputListener;
-
+import java.sql.*;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import javax.swing.JScrollPane;
@@ -20,15 +20,41 @@ public class PolicyDetailsDisplay1 extends JPanel implements MouseInputListener 
     CardLayoutMgr clm;
     JButton[] lArr = new JButton[5];
     // CardLayout cl;
-    JPanel[] p2= new JPanel[10] ;
+    JPanel[] p2;
+    String[] nameArr;
+    String[] relationArr;
     int i=0;
+    String username;
     FontPicker fp = new FontPicker();
-    public PolicyDetailsDisplay1(CardLayoutMgr cll){
-        // cl=cll;
+    public PolicyDetailsDisplay1(CardLayoutMgr cll,String usernm){
+        username=usernm;
         clm=cll;
-        
+//dbConnect
+        Conn c = new Conn();
+        //initialing array p2's size
+        String query1 = "select count(*) from members where username='"+username+"'";
+        String query2 = "select name,relation from members where username='"+username+"'";
+        try{
+            ResultSet rs = c.s.executeQuery(query1);
+            rs.next();
+            int num=Integer.parseInt(rs.getString(1));
+            p2 = new JPanel[num];
+            nameArr = new String[num];
+            relationArr = new String[num];
+            rs=c.s.executeQuery(query2);
+            int k=0;
+            while(rs.next()){
+                nameArr[k]=rs.getString(1);
+                relationArr[k]=rs.getString(2);
+                k++;
+            }
+        }catch(Exception e){
+            System.out.println("Exception in pdd1 dbConnect");
+        }
+
+
+//=======================dbup        
         // clm.varSize(0,-100);
-        System.out.println("Disp2");
         myPanel.setLayout(null);
         myPanel.setBackground(Color.WHITE);
         
@@ -36,7 +62,8 @@ public class PolicyDetailsDisplay1 extends JPanel implements MouseInputListener 
         jsp.setBorder(new EmptyBorder(0,0,0,0));
         //pilot
         int x=50;
-        for(i=0;i<10;i++,x+=130){
+        int p2Len = p2.length;
+        for(i=0;i<p2Len;i++,x+=130){
         p2[i]= new JPanel();
         // JPanel p2[i] = new RoundedBorderTest()
         p2[i].setBackground(Color.WHITE);
@@ -53,18 +80,18 @@ public class PolicyDetailsDisplay1 extends JPanel implements MouseInputListener 
         name.setFont(fp.forLabel);
         name.setBounds(20,5,60,30);
         p2[i].add(name);
-        
-        JLabel nameVal = new JLabel("<html><b><u>Jeevan DRIVING</u></b></html>");
+        String nameString = "<html><b><u>"+nameArr[i]+"</u></b></html>";
+        JLabel nameVal = new JLabel(nameString);
         nameVal.setFont(fp.forLabel);
         nameVal.setBounds(85,5,160,30);
         p2[i].add(nameVal);
 
-        JLabel relation = new JLabel("PolicyID:");
+        JLabel relation = new JLabel("Relation:");
         relation.setFont(fp.forLabel);
         relation.setBounds(400,5,70,30);
         p2[i].add(relation);
-
-        JLabel relationVal = new JLabel("<html><u><b>191080067</b></u></html>");
+        String relationString = "<html><b><u>"+relationArr[i]+"</u></b></html>";
+        JLabel relationVal = new JLabel(relationString);
         relationVal.setFont(fp.forLabel);
         relationVal.setBounds(480,5,120,30);
         p2[i].add(relationVal);

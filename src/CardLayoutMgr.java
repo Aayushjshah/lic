@@ -28,7 +28,7 @@ public class CardLayoutMgr extends JFrame{
         // pcl.setLayout(cl);
         add(p1);
         
-        PolicyDetailsDisplay1 pdd1 = new PolicyDetailsDisplay1(this);   //panel added to pcl
+        PolicyDetailsDisplay1 pdd1 = new PolicyDetailsDisplay1(this,"Manraj");   //panel added to pcl
         PolicyDetailsDisplay2 pdd2 = new PolicyDetailsDisplay2(this);   //panel added to pcl
         IndividualPolicyDetailsDisplay1 ipdd1 = new IndividualPolicyDetailsDisplay1(this);  //panel added to pcl
         pcl.add(pdd1.jsp,"pdd1");
@@ -36,7 +36,7 @@ public class CardLayoutMgr extends JFrame{
         pcl.add(ipdd1,"ipdd1");
 
         add(pcl);
-        cl.show(pcl,"pdd2");//cl is cardLayout
+        cl.show(pcl,"pdd1");//cl is cardLayout
         
 
 //end
