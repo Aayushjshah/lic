@@ -105,7 +105,7 @@ public class AddeCopy extends JFrame implements ActionListener{
     //copy file
       //initial file
       String initFileName = dir + "\\"+fileName;
-      String destPath = "db/"+userName +"/" +memberName + "/"+policyName;
+      String destPath = "db/"+userName +"/" +memberName + "/"+policyName+".pdf";
       System.out.println("in addFile");
       System.out.println(initFileName);
       File initFile = new File(initFileName);

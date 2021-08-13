@@ -22,19 +22,17 @@ public class CardLayoutMgr extends JFrame{
     CardLayoutMgr(){
         
         setBounds(350,120,fwidth,height);
-        System.out.println("AAYUSH");
         pcl.setBounds(220,5,pclwidth,pclheight);   //the outer right panel
         pcl.setBackground(Color.WHITE);
         // pcl.setLayout(cl);
         add(p1);
         
         PolicyDetailsDisplay1 pdd1 = new PolicyDetailsDisplay1(this,"Manraj");   //panel added to pcl
-        PolicyDetailsDisplay2 pdd2 = new PolicyDetailsDisplay2(this,"Manraj","Jignesh");   //panel added to pcl
-        IndividualPolicyDetailsDisplay1 ipdd1 = new IndividualPolicyDetailsDisplay1(this);  //panel added to pcl
+        // PolicyDetailsDisplay2 pdd2 = new PolicyDetailsDisplay2(this,pdd1.username,pdd1.memberName);   //panel added to pcl
+        // IndividualPolicyDetailsDisplay1 ipdd1 = new IndividualPolicyDetailsDisplay1(this,"Manraj","19991");  //panel added to pcl
         pcl.add(pdd1.jsp,"pdd1");
-        pcl.add(pdd2.jsp,"pdd2");
-        pcl.add(ipdd1,"ipdd1");
-
+        // pcl.add(pdd2.jsp,"pdd2");
+        // pcl.add(ipdd1,"ipdd1");
         add(pcl);
         cl.show(pcl,"pdd1");//cl is cardLayout
         
@@ -45,19 +43,23 @@ public class CardLayoutMgr extends JFrame{
         getContentPane().setBackground(Color.WHITE);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
-        System.out.println("*********");
     }
 
     public void setr(String i){
-        System.out.println("In setr");
         if(i.equals("ipdd1")){
             this.varSize(0,0);
         }else{
             pcl.setSize(pclwidth,pclheight);
             this.setSize(fwidth,height);
         }
-        cl.show(pcl,i);  
-        
+        cl.show(pcl,i);     
+    }
+    public void adderPdd2(PolicyDetailsDisplay2 c){
+        pcl.add(c.jsp,"pdd2");
+    }
+    public void adderiPdd1(IndividualPolicyDetailsDisplay1 c){
+        pcl.add(c,"ipdd1");
+        // return pcl;
     }
     public void varSize(int widthInc,int heightInc){
         pcl.setSize(pcl.getWidth()+ widthInc, pcl.getHeight()+heightInc);

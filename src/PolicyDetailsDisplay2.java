@@ -34,7 +34,6 @@ public class PolicyDetailsDisplay2 extends JPanel implements MouseInputListener 
         "'";
         String data = "select policyName,policyId,insuranceType,Company from policies where"+
         " username='"+username+"' and holder='"+member+"'";
-        System.out.println(data);
         try{
             ResultSet rs = c.s.executeQuery(countQuery);
             rs.next();
@@ -66,7 +65,6 @@ public class PolicyDetailsDisplay2 extends JPanel implements MouseInputListener 
         }
 //=========================
 
-        System.out.println("Disp2");
         myPanel.setLayout(null);
         myPanel.setBackground(Color.WHITE);
     
@@ -146,9 +144,7 @@ public class PolicyDetailsDisplay2 extends JPanel implements MouseInputListener 
         // TODO Auto-generated method stub
         for(int i =0 ; i<4;i++){
             if(e.getSource() ==p2[i]){
-                //change the layout
-                // p2[i].setBorder(new RoundedBorder(fp.panelColor,50));
-                System.out.println(i+"clicked");
+                clm.adderiPdd1(new IndividualPolicyDetailsDisplay1(clm, username, policyIds[i]));
                 clm.setr("ipdd1");
             }
         }

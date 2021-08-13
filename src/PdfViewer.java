@@ -1,26 +1,23 @@
 import javax.swing.*;
-import java.awt.Color;
-// import org.icepdf.ri.common.ComponentKeyBinding;
-// import org.icepdf.ri.common.SwingController;
-// import org.icepdf.ri.common.SwingViewBuilder;
+import javax.swing.JOptionPane;
 import java.io.File;
-import java.io.IOException;
 import java.awt.Desktop;
 public class PdfViewer extends JFrame{
-    JScrollPane sPane;
-   PdfViewer(){
-    
-
-    if (Desktop.isDesktopSupported()) {
-        try {
-            File myFile = new File("designing/aayushJeevanSugam.pdf");
-            Desktop.getDesktop().open(myFile);
-        
-        } catch (IOException ex) {
-            // no application registered for PDFs
+    // JScrollPane sPane;
+   PdfViewer(){}
+    String s="db/Manraj/Jignesh/ee.pdf";
+    public void openFile(String filePath){
+        if (Desktop.isDesktopSupported()) {
+            try {
+                File myFile = new File(filePath);
+                Desktop.getDesktop().open(myFile);
+            
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null,"error in opening file");
+                
+            }
         }
     }
-
 
 
     // JTextArea textArea = new JTextArea(20, 20);  
@@ -34,12 +31,11 @@ public class PdfViewer extends JFrame{
     // getContentPane().add(sPane);
 
     //mainPane
-        setBounds(100,20,1200,800);
-        setLayout(null);
-        getContentPane().setBackground(Color.WHITE);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setVisible(true);
-   }
+        // setBounds(100,20,1200,800);
+        // setLayout(null);
+        // getContentPane().setBackground(Color.WHITE);
+        // setDefaultCloseOperation(EXIT_ON_CLOSE);
+        // setVisible(true);
 
 
   /* void openpdf(String file){

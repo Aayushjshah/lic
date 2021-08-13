@@ -24,10 +24,12 @@ public class PolicyDetailsDisplay1 extends JPanel implements MouseInputListener 
     String[] nameArr;
     String[] relationArr;
     int i=0;
-    String username;
+    public String username,memberName;
+    // public String memberName;
     FontPicker fp = new FontPicker();
     public PolicyDetailsDisplay1(CardLayoutMgr cll,String usernm){
         username=usernm;
+        
         clm=cll;
 //dbConnect
         Conn c = new Conn();
@@ -103,7 +105,7 @@ public class PolicyDetailsDisplay1 extends JPanel implements MouseInputListener 
             ResultSet rs1 = c.s.executeQuery(policyQuery);
             int y=10;
             while(rs1.next()){
-                JLabel pol1 = new JLabel("=>Drivng Insurance");
+                JLabel pol1 = new JLabel("=>"+rs1.getString(1));
                 pol1.setFont(fp.forLabel);
                 pol1.setBounds(y,50,180,30);
                 pol1.setForeground(Color.WHITE);
@@ -135,7 +137,8 @@ public class PolicyDetailsDisplay1 extends JPanel implements MouseInputListener 
         // TODO Auto-generated method stub
         for(int i =0 ; i<4;i++){
             if(e.getSource() ==p2[i]){
-                System.out.println(i+"clicked");
+                memberName=nameArr[i];
+                clm.adderPdd2(new PolicyDetailsDisplay2(clm, username, nameArr[i]));
                 clm.setr("pdd2");
             }
         }

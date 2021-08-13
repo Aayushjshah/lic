@@ -14,7 +14,7 @@ public class IndividualPolicyDetailsDisplay1 extends JPanel implements MouseInpu
     CardLayoutMgr clm;
     FontPicker fp= new FontPicker();
     Border b3 = new RoundedBorder(fp.panelColor,50);
-    JLabel bl1,bl2;
+    JLabel bl1,bl2,bl3;
     
 //===================    
     String[] lNameString1 =  {"Name of the policy","PolicyId","Plan Name","PolicyNo","Company","sumInsured"};
@@ -35,7 +35,7 @@ public class IndividualPolicyDetailsDisplay1 extends JPanel implements MouseInpu
     //====================================
     String[] lBilString1 =  {"Installment Premium","Upcoming Premium Date","Premium Cycle","1st Premium Paid","Last premium Date","Bank A/c"};
     JLabel[]  lBil1 = new JLabel[6];
-    String[] lBilDataString1 =  {"4000","2021-08-12","Yearly","36000","2031-12-12","AayushjShah BOI"};
+    String[] lBilDataString1 =  new String[6];
     JLabel[]  lBilData1 = new JLabel[6];
     //====================================
     String[] lMaturityString1 =  {"Maturity Amount","Maturity Date"};
@@ -47,7 +47,8 @@ public class IndividualPolicyDetailsDisplay1 extends JPanel implements MouseInpu
     
     
     int i=0;//iterator variable
-    String username,policyId;
+    String username,policyId,holder;
+    String e;
     IndividualPolicyDetailsDisplay1(CardLayoutMgr cll,String usrnm , String polId){
         clm=cll;
         username=usrnm;
@@ -57,11 +58,33 @@ public class IndividualPolicyDetailsDisplay1 extends JPanel implements MouseInpu
         String query = "select * from policies where username='"+username+"' and policyId='"+policyId+"'";
         try{
             ResultSet rs = c.s.executeQuery(query);
-            while(rs.next()){
+            rs.next();
+                lDataString1[0]=rs.getString(6);
+                lDataString1[1]=rs.getString(5);
+                lDataString1[2]=rs.getString(3);
+                lDataString1[3]=rs.getString(4);
+                lDataString1[4]=rs.getString(7);
+                lDataString1[5]=rs.getString(8);
+                //Billing Info
+                lBilDataString1[0]=rs.getString(12);
+                lBilDataString1[1]="ToBeUpdated";
+                lBilDataString1[2]=rs.getString(11);
+                lBilDataString1[3]=rs.getString(9);
+                lBilDataString1[4]=rs.getString(13);
+                lBilDataString1[5]=rs.getString(14);
+                //NomineeDetails
+                lNomDataString1[0]=rs.getString(17);
+                lNomDataString1[1]=rs.getString(19);
+                lNomDataString1[2]=rs.getString(18);
+                lMaturityDataString1[0]= rs.getString(15);
+                lMaturityDataString1[0]= rs.getString(16);
 
-            }
+                //eCopyDetails
+                e = rs.getString(20);
+                holder=rs.getString(2);
+
         }catch(Exception e){
-            System.out.println("in ippd1");
+            System.out.println("in ippd1 dbConnect");
         }
 //=======================
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/ocean2.jpg"));
@@ -269,9 +292,21 @@ JPanel in4 = new JPanel();
     bl2.addMouseListener(this);
     bl2.setVisible(false);
     in5.add(bl2);
-
-
-
+    h+=40;
+    ImageIcon b3 = new ImageIcon(ClassLoader.getSystemResource("icons/noEcopy.png"));
+    Image b32 = b3.getImage().getScaledInstance(h,w, Image.SCALE_DEFAULT);
+    ImageIcon b33 = new ImageIcon(b32);
+    bl3 = new JLabel(b33);
+    bl3.setBounds(15,x,h,w);
+    bl3.setVisible(false);
+    // bl3.setEnabled(false);
+    in5.add(bl3);
+    // e="f";
+    if(!e.equals("y")){
+        bl3.setVisible(true);
+        bl1.setVisible(false);
+        bl2.setVisible(false);
+    }
 
 
 //============bottom====================
@@ -298,8 +333,11 @@ JPanel in4 = new JPanel();
     @Override
     public void mouseReleased(MouseEvent e) {
         // TODO Auto-generated method stub
-        if(e.getSource()==bl1){
+        if(e.getSource()==bl1 || e.getSource() == bl2){
             System.out.println("Show eCopy!");
+            PdfViewer pv = new PdfViewer();
+            String filePath="db/"+username+"/"+holder+"/"+lDataString1[0]+".pdf";
+            pv.openFile(filePath);
         }
         
     }
@@ -308,7 +346,6 @@ JPanel in4 = new JPanel();
     public void mouseEntered(MouseEvent e) {
         // TODO Auto-generated method stub
         if(e.getSource() == bl1 || e.getSource() == bl2){
-            // System.out.println();
             bl1.setVisible(false);;
             bl2.setVisible(true);
         }
@@ -318,7 +355,6 @@ JPanel in4 = new JPanel();
     public void mouseExited(MouseEvent e) {
         // TODO Auto-generated method stub
         if(e.getSource() == bl1 || e.getSource() == bl2){
-            // System.out.println();
             bl1.setVisible(true);
             bl2.setVisible(false);
         }
