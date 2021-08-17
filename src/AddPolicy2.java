@@ -13,7 +13,7 @@ public class AddPolicy2 extends JFrame implements ActionListener{
     JLabel[] arr = new JLabel[8];
     String[] labels = {"First premium","1st premium date","Premium Cycle", "Installment Premium"  , "Last Premium Date",
                         "From Bank A/C","Maturity Amount" , "Date of Maturity"};
-    JTextField[] tarr = new JTextField[8];
+    PlaceholderTextField[] tarr = new PlaceholderTextField[8];
     JComboBox<String>carr,nCarr;//last for nominee
     // String[] c0,c1,c2,c3;
     int j;
@@ -22,7 +22,7 @@ public class AddPolicy2 extends JFrame implements ActionListener{
     String[] nLabel = {"Name", "Contact NO." };
     JTextField[] nTarr = new JTextField[3];
 
-
+    DateGetter dg = new DateGetter();
     String[] agentName;
     JButton back,next,Cancel,Submit;
     JLabel image;
@@ -95,13 +95,16 @@ String[] policyDetails,nomineeDetails;
                 continue;
             }
             
-            tarr[i]= new JTextField();
+            tarr[i]= new PlaceholderTextField();
             tarr[i].setFont(fp.forLabel);
             tarr[i].setForeground(Color.BLACK);
             tarr[i].setBounds(205,x,150,30);
             x+=50;
             add(tarr[i]);
         }
+        tarr[1].setPlaceholder("dd-MM-yy");
+        tarr[4].setPlaceholder("dd-MM-yy");
+        tarr[7].setPlaceholder("dd-MM-yy");
         
         JLabel nHead = new JLabel("<html><u><b>Agent Details</b></u></html>");
         nHead.setFont(fp.subHeadFont);
@@ -235,6 +238,9 @@ String[] policyDetails,nomineeDetails;
                 if(i==2){
                     policyQuery+=(String)carr.getSelectedItem()+"','";
                     continue;
+                }if(i==1 || i==4 || i==7){
+                    policyQuery+=dg.adjustDate(tarr[i].getText())+"','";
+                    continue;
                 }
                 policyQuery+=tarr[i].getText()+"','";
             }
@@ -254,7 +260,7 @@ String[] policyDetails,nomineeDetails;
                 System.out.println(agentQuery);
                 Conn c = new Conn();
                 try{
-                    c.s.executeUpdate(agentQuery);
+                    // c.s.executeUpdate(agentQuery);
                     ResultSet rs = c.s.executeQuery("select LAST_INSERT_ID()");
                     rs.next();
                     policyQuery+=rs.getInt(1)+")";
@@ -275,7 +281,7 @@ String[] policyDetails,nomineeDetails;
             //policy
             try{
                 Conn c = new Conn();
-                c.s.executeUpdate(policyQuery);
+                // c.s.executeUpdate(policyQuery);
                 System.out.println("Added to db!");
             }catch(Exception e){
                 System.out.println("error in policy");

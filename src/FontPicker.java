@@ -9,5 +9,5 @@ public class FontPicker {
 
     //color
     public Color panelColor = new Color(255,179,217);
-    public Color shadowforPanel = Color.RED;
+    public Color shadowforPanel = Color.MAGENTA;
 }

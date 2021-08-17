@@ -13,6 +13,7 @@ import javax.swing.JButton;
 public class VerticalNav extends JPanel implements ActionListener{
     public JPanel p1 = new JPanel();
     JButton[] lArr = new JButton[5];
+    String[] labels = {"PolicySchedule","Add policy","View Policy","Update Policy","Manage Reminders"};
     FontPicker fp = new FontPicker();
     CardLayoutMgr cl;
         VerticalNav(CardLayoutMgr cll){
@@ -32,10 +33,12 @@ public class VerticalNav extends JPanel implements ActionListener{
         int j=100;
         int i=0;
         for(;i<5;i++){
-            lArr[i]=new JButton("Label"+i);
+            lArr[i]=new JButton(labels[i]);
             lArr[i].setFont(fp.forLabel);
+            lArr[i].setForeground(Color.WHITE);
+            lArr[i].setBackground(Color.BLACK);
             lArr[i].addActionListener(this);
-            lArr[i].setBounds(20, j, 120, 30);
+            lArr[i].setBounds(10, j, 200, 30);
             p1.add(lArr[i]);
             j+=50;
         }
