@@ -15,7 +15,7 @@ import java.awt.Color;
 public class DetailedScheduler implements MouseInputListener{
     JPanel myPanel = new JPanel();
     public JScrollPane jsp = new ModernScrollPane(myPanel);
-    String[] heads = {"PolicyNo.","Holder","Premium Amt.","Latest Date","Agent" , "BankA/c"};
+    String[] heads = {"PolicyNo.","Holder","Premium Amt.","DueDate","Agent" , "BankA/c"};
     FontPicker fp = new FontPicker();
     Border b2 =new RoundedBorder(fp.panelColor,50);
     int x=640;
